@@ -83,15 +83,27 @@ def member_view(request):
     return render(request, 'relationship_app/member_view.html')
 
 # Task 04
-@permission_required('relationship_app.can_add_book')
+@permission_required('relationship_app.can_add_book', raise_exception=True)
 def add_book(request):
-    # Logic to add a book
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_books')
+    else:
+        form = BookForm()
     return render(request, 'add_book.html')
 
-@permission_required('relationship_app.can_change_book')
+@permission_required('relationship_app.can_change_book', raise_exception=True)
 def edit_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
-    # Logic to edit the book
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('list_books')
+    else:
+        form = BookForm(instance=book)
     return render(request, 'edit_book.html', {'book': book})
 
 @permission_required('relationship_app.can_delete_book', raise_exception=True)
