@@ -32,10 +32,10 @@ def run_queries():
     # Retrieve the librarian for a library
     try:
         if library:
-            librarian = library.librarian
+            librarian = Librarian.objects.get(library=library)  # ✅ Required syntax
             print(f"👨‍🏫 Librarian of {library.name}: {librarian.name}")
-    except Exception as e:
-        print("❌ Could not retrieve librarian:", e)
+    except Librarian.DoesNotExist:
+            print(f"❌ Librarian for '{library_name}' not found.")
 
 if __name__ == "__main__":
     run_queries()
