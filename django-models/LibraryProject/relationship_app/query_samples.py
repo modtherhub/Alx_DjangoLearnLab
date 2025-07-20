@@ -14,7 +14,7 @@ def run_queries():
     author_name = "J.K. Rowling"
     try:
         author = Author.objects.get(name=author_name)
-        books_by_author = author.books.all()
+        books_by_author = Book.objects.filter(author=author)  # ✅ Match expected syntax
         print(f"📚 Books by {author.name}: {[book.title for book in books_by_author]}")
     except Author.DoesNotExist:
         print(f"❌ Author '{author_name}' not found.")
@@ -22,7 +22,7 @@ def run_queries():
     # List all books in a library
     library_name = "Central Library"
     try:
-        library = Library.objects.get(name=library_name)  # ✅ This line matches the check
+        library = Library.objects.get(name=library_name)
         books_in_library = library.books.all()
         print(f"🏛️ Books in {library.name}: {[book.title for book in books_in_library]}")
     except Library.DoesNotExist:
