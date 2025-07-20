@@ -7,6 +7,9 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.shortcuts import render
+from .models import UserProfile
 
 
 # Function-based view to list all books
@@ -33,3 +36,22 @@ def register(request):
 
 def home(request):
     return HttpResponse("<h1>Welcome to the Library App!</h1><p><a href='/books/'>View Books</a></p>")
+
+# Task 03
+
+def role_required(role):
+    def decorator(view_func):
+        return login_required(user_passes_test(lambda u: u.userprofile.role == role)(view_func))
+    return decorator
+
+@role_required('Admin')
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html')
+
+@role_required('Librarian')
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html')
+
+@role_required('Member')
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html')
