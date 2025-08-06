@@ -9,7 +9,7 @@ from .forms import ExampleForm
 
 def book_list(request):
     books = Book.objects.select_related('author').all()
-    return render(request, 'bookshelf/list_books.html', {'books': books})
+    return render(request, 'bookshelf/book_list.html', {'books': books})
 
 def example_form_view(request):
     if request.method == 'POST':
