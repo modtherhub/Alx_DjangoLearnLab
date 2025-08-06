@@ -4,7 +4,8 @@ from .models import Book, Library
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
-from .forms import BookForm, ExampleForm
+from .forms import BookForm
+from .forms import ExampleForm
 
 def book_list(request):
     books = Book.objects.select_related('author').all()
