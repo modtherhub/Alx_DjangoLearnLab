@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, filters
 from rest_framework import viewsets
 from .models import Book
 from .serializers import BookSerializer
@@ -9,6 +9,16 @@ class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]  # للجميع إمكانية القراءة
+
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    filterset_fields = ['title', 'author__name', 'publication_year']
+
+    # البحث
+    search_fields = ['title', 'author__name']
+
+    # الترتيب
+    ordering_fields = ['title', 'publication_year']
 
 # عرض كتاب واحد حسب الـ pk (Retrieve)
 class BookDetailView(generics.RetrieveAPIView):
