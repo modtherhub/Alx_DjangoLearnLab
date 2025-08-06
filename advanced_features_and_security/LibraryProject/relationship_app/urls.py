@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import (
+from bookshelf.views import (
     list_books,
     LibraryDetailView,
     login_view,
