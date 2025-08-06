@@ -16,7 +16,7 @@ from bookshelf.views import (
 
 urlpatterns = [
     path('', home, name='home'),
-    path('books/', list_books, name='list_books'),
+    path('books/', book_list, name='book_list'),
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
 
     # auth views

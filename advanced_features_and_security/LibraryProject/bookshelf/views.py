@@ -10,7 +10,7 @@ from .forms import BookForm
 
 
 # Function-based view
-def list_books(request):
+def book_list(request):
     books = Book.objects.select_related('author').all()
     return render(request, 'relationship_app/list_books.html', {'books': books})
 
