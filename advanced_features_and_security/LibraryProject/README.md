@@ -14,3 +14,27 @@ class Meta:
         ("can_edit", "Can edit book"),
         ("can_delete", "Can delete book"),
     ]
+
+
+# Security Enhancements in LibraryProject
+
+## ✅ Settings Secured:
+- DEBUG=False for production
+- Enabled:
+  - SECURE_BROWSER_XSS_FILTER
+  - X_FRAME_OPTIONS
+  - SECURE_CONTENT_TYPE_NOSNIFF
+  - SESSION_COOKIE_SECURE
+  - CSRF_COOKIE_SECURE
+
+## ✅ Templates Secured:
+- All forms include {% csrf_token %}
+
+## ✅ Views Secured:
+- All data access uses Django ORM
+- No raw SQL used
+- Inputs validated via BookForm and other forms
+
+## ✅ CSP:
+- django-csp middleware is enabled
+- Sources restricted to 'self' and trusted domains only

@@ -1,6 +1,7 @@
 from django.urls import path
-from bookshelf.views import (
-    list_books,
+from . import views
+from .views import (
+    book_list,
     LibraryDetailView,
     login_view,
     logout_view,
@@ -16,7 +17,7 @@ from bookshelf.views import (
 
 urlpatterns = [
     path('', home, name='home'),
-    path('books/', book_list, name='book_list'),
+    path('books/', views.book_list, name='book_list'),
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
 
     # auth views

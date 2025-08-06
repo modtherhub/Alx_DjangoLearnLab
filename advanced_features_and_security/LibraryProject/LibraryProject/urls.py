@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('', lambda request: redirect('list_books')), 
+    path('', lambda request: redirect('book_list')), 
     path('admin/', admin.site.urls),
-    path('', include('relationship_app.urls')),
+    path('', include('bookshelf.urls')),
 ]

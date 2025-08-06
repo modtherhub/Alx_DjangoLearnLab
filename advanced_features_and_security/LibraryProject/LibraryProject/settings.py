@@ -25,7 +25,14 @@ SECRET_KEY = 'django-insecure-n-lp*b11=s)*nv*sdu9#rg8_rh3q_dh_&!lg@@f$e8mn6wjklj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -39,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf',
     'relationship_app',
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -128,4 +137,12 @@ LOGIN_REDIRECT_URL = 'list_books'
 LOGOUT_REDIRECT_URL = 'login'
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+CONTENT_SECURITY_POLICY = {
+    'DIRECTIVES': {
+        'default-src': ("'self'",),
+        'style-src': ("'self'", 'https://fonts.googleapis.com'),
+        'font-src': ("'self'", 'https://fonts.gstatic.com', 'data:'),
+    }
+}
 
