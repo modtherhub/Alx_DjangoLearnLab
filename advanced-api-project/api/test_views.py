@@ -10,6 +10,9 @@ class BookAPITestCase(APITestCase):
         self.author = Author.objects.create(name="John Doe")
         self.book = Book.objects.create(title="Sample Book", author=self.author, publication_year=2020)
         self.client = APIClient()
+
+        self.client.login(username="testuser", password="testpass")
+
         self.token_url = reverse('api-token-auth')
         response = self.client.post(self.token_url, {
             'username': 'testuser',
