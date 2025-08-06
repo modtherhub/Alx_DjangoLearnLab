@@ -38,3 +38,37 @@ class Meta:
 ## ✅ CSP:
 - django-csp middleware is enabled
 - Sources restricted to 'self' and trusted domains only
+
+
+# HTTPS Deployment Configuration
+
+The application is deployed using Nginx with SSL enabled via Let's Encrypt.
+
+Key SSL Configuration:
+- SSL certificate and key are placed in `/etc/letsencrypt/live/example.com/fullchain.pem` and `/etc/letsencrypt/live/example.com/privkey.pem`
+- HTTP (port 80) is redirected to HTTPS (port 443)
+- HSTS headers are enforced via Django and confirmed in browser dev tools
+
+Recommended commands:
+sudo certbot --nginx -d example.com -d www.example.com
+
+
+# HTTPS & Security Configuration for LibraryProject
+
+## Django Settings
+
+- SECURE_SSL_REDIRECT = True
+- SECURE_HSTS_SECONDS = 31536000
+- SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+- SECURE_HSTS_PRELOAD = True
+- SESSION_COOKIE_SECURE = True
+- CSRF_COOKIE_SECURE = True
+- X_FRAME_OPTIONS = 'DENY'
+- SECURE_CONTENT_TYPE_NOSNIFF = True
+- SECURE_BROWSER_XSS_FILTER = True
+
+## Deployment
+
+- HTTPS enabled with Let's Encrypt and Nginx
+- HTTP automatically redirected to HTTPS
+- SSL certificate renewed using certbot
