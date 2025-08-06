@@ -6,6 +6,7 @@
 </head>
 <body>
     <h1>Books Available:</h1>
+    <a href="{% url 'add_book' %}">Add a new book</a>
     <ul>
         {% for book in books %}
         <li>{{ book.title }} by {{ book.author.name }}</li>
