@@ -7,4 +7,5 @@ class BookForm(forms.ModelForm):
         fields = ['title', 'author', 'publication_year']
 
 class ExampleForm(forms.Form):
-    example_field = forms.CharField(label='Example Field', max_length=100)
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()

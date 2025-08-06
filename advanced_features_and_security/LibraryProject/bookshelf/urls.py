@@ -12,7 +12,8 @@ from .views import (
     member_view,
     add_book,
     edit_book, 
-    delete_book
+    delete_book,
+    example_form_view
 )
 
 urlpatterns = [
@@ -33,4 +34,5 @@ urlpatterns = [
     path('books/edit/<int:pk>/', edit_book, name='edit_book'),
     path('books/delete/<int:pk>/', delete_book, name='delete_book'),
 
+    path('example-form/', example_form_view, name='example_form'),
 ]

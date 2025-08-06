@@ -10,6 +10,17 @@ def book_list(request):
     books = Book.objects.select_related('author').all()
     return render(request, 'bookshelf/list_books.html', {'books': books})
 
+def example_form_view(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # هنا ممكن تخزن أو تطبع أو ترجع رسالة
+            return redirect('book_list')  # أو أي صفحة عندك
+    else:
+        form = ExampleForm()
+
+    return render(request, 'bookshelf/form_example.html', {'form': form})
+
 class LibraryDetailView(DetailView):
     model = Library
     template_name = 'bookshelf/library_detail.html'
