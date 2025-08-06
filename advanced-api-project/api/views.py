@@ -2,7 +2,7 @@ from rest_framework import generics, permissions
 from rest_framework import viewsets
 from .models import Book
 from .serializers import BookSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 # عرض جميع الكتب (List)
 class BookListView(generics.ListAPIView):
