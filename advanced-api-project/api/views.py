@@ -1,12 +1,13 @@
 from rest_framework import generics, permissions
 from .models import Book
 from .serializers import BookSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 # عرض جميع الكتب (List)
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]  # للجميع إمكانية القراءة
+    permission_classes = [IsAuthenticatedOrReadOnly]  # للجميع إمكانية القراءة
 
 # عرض كتاب واحد حسب الـ pk (Retrieve)
 class BookDetailView(generics.RetrieveAPIView):
