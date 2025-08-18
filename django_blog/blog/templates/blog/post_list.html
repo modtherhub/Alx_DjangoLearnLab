@@ -1,11 +1,17 @@
 {% extends "blog/base.html" %}
 {% block content %}
+<form method="get" action="">
+  <input type="text" name="q" placeholder="Search hear..." value="{{ request.GET.q }}">
+  <button type="submit">Search</button>
+</form>
+
 <h2>All Posts</h2>
 <a href="{% url 'post-create' %}">Create New Post</a>
 <ul>
   {% for post in posts %}
     <li>
       <a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a> - {{ post.author.username }}
+      <a href="{% url 'posts-by-tag' tag.name %}">{{ tag.name }}</a>
     </li>
   {% empty %}
     <li>No posts yet.</li>

@@ -12,6 +12,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Comment
 from .forms import CommentForm
 from django.urls import reverse_lazy
+from django.db.models import Q
+from .models import Post, Tag
+from .forms import PostForm
 
 # ✅ Form for registration
 class RegisterForm(UserCreationForm):
@@ -68,16 +71,29 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-published_date']
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get("q")
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(tags__name__icontains=query)
+            ).distinct()
+        return queryset
+
 # View a single post
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
+    context_object_name = 'post'
 
 # Create a new post
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
+    success_url = '/'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -88,6 +104,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
+    success_url = '/'
 
     def test_func(self):
         post = self.get_object()
@@ -160,3 +177,8 @@ class CommentDeleteView(DeleteView):
     model = Comment
     template_name = 'blog/comment_confirm_delete.html'
     success_url = reverse_lazy('post-list')
+
+def posts_by_tag(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    posts = tag.posts.all()
+    return render(request, "blog/posts_by_tag.html", {"tag": tag, "posts": posts})
