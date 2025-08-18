@@ -9,3 +9,28 @@
 {% endif %}
 <a href="{% url 'post-list' %}">Back to all posts</a>
 {% endblock %}
+
+<h2>Comments</h2>
+{% for comment in post.comments.all %}
+    <div>
+        <strong>{{ comment.author.username }}</strong> - {{ comment.created_at|date:"F d, Y H:i" }}
+        <p>{{ comment.content }}</p>
+        {% if user == comment.author %}
+            <a href="{% url 'edit_comment' comment.pk %}">Edit</a> |
+            <a href="{% url 'delete_comment' comment.pk %}">Delete</a>
+        {% endif %}
+    </div>
+{% empty %}
+    <p>No comments yet.</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+    <h3>Add a comment</h3>
+    <form method="post" action="{% url 'add_comment' post.pk %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Post Comment</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'login' %}">Login</a> to comment.</p>
+{% endif %}
