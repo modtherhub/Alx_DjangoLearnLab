@@ -1,0 +1,6 @@
+<h2>المقالات التي تحمل الوسم: {{ tag.name }}</h2>
+{% for post in posts %}
+  <h3><a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h3>
+{% empty %}
+  <p>لا توجد مقالات</p>
+{% endfor %}
