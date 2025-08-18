@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Comment
 from .forms import CommentForm
+from django.urls import reverse_lazy
 
 # ✅ Form for registration
 class RegisterForm(UserCreationForm):
@@ -137,3 +138,25 @@ def delete_comment(request, pk):
         comment.delete()
         return redirect('post_detail', pk=post_pk)
     return render(request, 'blog/delete_comment.html', {'comment': comment})
+
+class CommentCreateView(CreateView):
+    model = Comment
+    fields = ['content']  # عدّل الحقول إذا عندك غيرها
+    template_name = 'blog/comment_form.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post_id = self.kwargs['pk']  # يربط الكومنت مع البوست
+        return super().form_valid(form)
+
+
+class CommentUpdateView(UpdateView):
+    model = Comment
+    fields = ['content']
+    template_name = 'blog/comment_form.html'
+
+
+class CommentDeleteView(DeleteView):
+    model = Comment
+    template_name = 'blog/comment_confirm_delete.html'
+    success_url = reverse_lazy('post-list')
