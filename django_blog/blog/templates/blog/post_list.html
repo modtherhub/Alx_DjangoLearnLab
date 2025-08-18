@@ -11,7 +11,7 @@
   {% for post in posts %}
     <li>
       <a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a> - {{ post.author.username }}
-      <a href="{% url 'posts-by-tag' tag.name %}">{{ tag.name }}</a>
+      <a href="{% url 'post-by-tag' tag.name %}">{{ tag.name }}</a>
     </li>
   {% empty %}
     <li>No posts yet.</li>
