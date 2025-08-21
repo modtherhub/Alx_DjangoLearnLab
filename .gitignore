@@ -11,3 +11,31 @@ git commit -m "Update .gitignore to ignore virtual environments and pyc files"
 env/
 *.pyc
 __pycache__/
+
+# python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*$py.class
+
+
+# env
+.env
+.venv/
+venv/
+
+
+# django
+staticfiles/
+media/
+*/migrations/
+!*/migrations/__init__.py
+.DS_Store
+Thumbs.db
+*.log
+
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
