@@ -42,26 +42,39 @@ class FeedView(generics.ListAPIView):
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
-class Like(APIView):
+# View لعمل Like
+class LikePostView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)
+
+        # تحقق إذا كان المستخدم قد عمل like بالفعل
         like, created = Like.objects.get_or_create(user=request.user, post=post)
+
         if created:
-            # إنشاء إشعار
+            # أنشئ Notification للكاتب
             Notification.objects.create(
                 recipient=post.author,
                 actor=request.user,
-                verb='liked your post',
+                verb="liked your post",
                 target=post
             )
-        return Response({"message": "Post liked"})
+            return Response({"message": "Post liked"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"message": "You already liked this post"}, status=status.HTTP_200_OK)
 
-class UnlikePostView(APIView):
+
+# View لعمل Unlike
+class UnlikePostView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
-        Like.objects.filter(user=request.user, post=post).delete()
-        return Response({"message": "Post unliked"})
+        post = generics.get_object_or_404(Post, pk=pk)
+        like = Like.objects.filter(user=request.user, post=post).first()
+
+        if like:
+            like.delete()
+            return Response({"message": "Post unliked"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "You haven't liked this post"}, status=status.HTTP_400_BAD_REQUEST)
