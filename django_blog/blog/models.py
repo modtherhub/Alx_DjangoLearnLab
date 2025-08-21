@@ -13,12 +13,12 @@ class Post(models.Model):
     content = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     published_date = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)   # <-- هذا هو الحقل الجديد الذي يسبب الخطأ!
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
-
+    
     def __str__(self):
         return self.title
-
+    
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'pk': self.pk})
     
