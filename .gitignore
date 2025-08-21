@@ -1,0 +1,13 @@
+# إضافة مجلدات البيئة الافتراضية وملفات pyc
+echo ".venv/" >> .gitignore
+echo "env/" >> .gitignore
+echo "*.pyc" >> .gitignore
+echo "__pycache__/" >> .gitignore
+
+# إضافة ملف gitignore نفسه للتتبع
+git add .gitignore
+git commit -m "Update .gitignore to ignore virtual environments and pyc files"
+.venv/
+env/
+*.pyc
+__pycache__/
